@@ -1,32 +1,39 @@
 import React, {Component} from 'react';
 import {Grid, Row, Col, ListGroup, ListGroupItem, Media} from 'react-bootstrap';
 
+import Message from '../models/Message';
+
 class Body extends Component{
+
+    constructor(props){
+        super(props);
+        this.state = {
+            messages: []
+        }
+    }
+
+    componentWillMount(){
+        Message.getAll()
+               .then((data) => {
+                   this.setState({ messages: data });
+               });
+    }
 
     render(){
         return(
             <Col md={6} mdPush={2}>
-            <div>
-                <Media>
-                 <Media.Left>
-                    <img width={64} height={64} src="http://innocentwords.com/wp-content/uploads/2015/03/JerryCantrell.jpg" alt="Image"/>
-                  </Media.Left>
-                  <Media.Body>
-                    <Media.Heading>Media Heading</Media.Heading>
-                    <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                  </Media.Body>
-                </Media>
-
-                <Media>
-                  <Media.Left>
-                    <img width={64} height={64} src="http://innocentwords.com/wp-content/uploads/2015/03/JerryCantrell.jpg" alt="Image"/>
-                  </Media.Left>
-                  <Media.Body>
-                    <Media.Heading>Media Heading</Media.Heading>
-                    <p>Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin commodo. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.</p>
-                  </Media.Body>
-                </Media>
-
+                <div>
+                    {this.state.messages.map((message, key) =>
+                        <Media key={key}>
+                         <Media.Left>
+                            <img width={64} height={64} src="http://innocentwords.com/wp-content/uploads/2015/03/JerryCantrell.jpg" alt="Image"/>
+                          </Media.Left>
+                          <Media.Body>
+                            <Media.Heading>Nombre User</Media.Heading>
+                            <p>{message.body}</p>
+                          </Media.Body>
+                        </Media>
+                    )}
                 </div>
             </Col>
         );
